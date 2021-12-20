@@ -5,6 +5,8 @@ import ir.maktab.model.Account;
 import ir.maktab.model.Transaction;
 import ir.maktab.model.enuramation.TransactionType;
 
+import java.util.List;
+
 /**
  * @author Mahsa Alikhani m-58
  */
@@ -25,6 +27,7 @@ public class TransactionService {
         fund = fund - amount;
         Transaction transaction = new Transaction();
         transaction.setTransactionType(TransactionType.WITHDRAW);
+        transaction.setAccount(account);
         transactionDao.saveNewTransaction(transaction);
         return fund;
     }
@@ -34,7 +37,12 @@ public class TransactionService {
         fund = fund + amount;
         Transaction transaction = new Transaction();
         transaction.setTransactionType(TransactionType.DEPOSIT);
+        transaction.setAccount(account);
         transactionDao.saveNewTransaction(transaction);
         return fund;
+    }
+
+    public List<Transaction> getThreeLastTransactionsByCardNumber(long cardNumber) {
+       return transactionDao.findThreeLastTransactionsByCardNumber(cardNumber);
     }
 }

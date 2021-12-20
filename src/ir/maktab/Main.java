@@ -3,6 +3,7 @@ package ir.maktab;
 import ir.maktab.exception.NotFoundException;
 import ir.maktab.model.Account;
 import ir.maktab.model.Client;
+import ir.maktab.model.Transaction;
 import ir.maktab.model.Updates;
 import ir.maktab.model.enuramation.AccountType;
 import ir.maktab.model.enuramation.ClientHistoryType;
@@ -34,7 +35,7 @@ public class Main {
             System.out.println("1.create new client\n2.create new account\n" +
                     "3.find client by name\n4.find client by family\n5.find client by card number\n" +
                     "6.change name\n7.change family\n8.change national number\n9.change client history\n" +
-                    "10.withdraw\n11.deposit\n12.Exit");
+                    "10.withdraw\n11.deposit\n12.deposit\n13.Exit");
             choice = scanner.nextInt();
             switch (choice){
                 case 1:
@@ -74,11 +75,14 @@ public class Main {
                 case 11:
                     deposit();
                     break;
+                case 12:
+                    viewThreeLastTransactionsByCardNumber();
+                    break;
                 default:
                     System.out.println("Invalid choice");
                     break;
             }
-        }while (choice != 12);
+        }while (choice != 13);
     }
 
     private static void deposit() {
@@ -235,9 +239,15 @@ public class Main {
     private static void viewClientByCardNumber() {
         System.out.println("card number:");
         long cardNumber  = scanner.nextLong();
-        //Account foundAccount = accountService.getAccountByCardNumber(cardNumber);
         Client foundClient = clientService.getClientByAccountId(cardNumber);
         System.out.println(foundClient);
+    }
+
+    private static void viewThreeLastTransactionsByCardNumber() {
+        System.out.println("card number:");
+        long cardNumber  = scanner.nextLong();
+        List<Transaction> threeLastTransaction = transactionService.getThreeLastTransactionsByCardNumber(cardNumber);
+        System.out.println(threeLastTransaction);
     }
 
     public static String generateRandom(int length) {
@@ -252,7 +262,7 @@ public class Main {
 
     public static Date calculateFourYearsAfter(){
         Calendar cal = Calendar.getInstance();
-        Date currentDate = cal.getTime();
+        //Date currentDate = cal.getTime();
         cal.add(Calendar.YEAR, 4);
         Date fourNextYear = cal.getTime();
         return fourNextYear;
